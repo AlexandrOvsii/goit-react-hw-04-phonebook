@@ -1,0 +1,20 @@
+.ContactsWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  border: 1px solid black;
+  margin-left: 10px;
+}
+
+.Label {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.Btn {
+  width: 100px;
+  margin: 10px;
+}
