@@ -3,8 +3,7 @@ import css from './App.module.css';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
-import contacs from './contacts.json'
-
+import contacs from './contacts.json';
 
 class App extends Component {
   state = {

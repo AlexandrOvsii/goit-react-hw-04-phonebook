@@ -1,80 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import css from './ContactForm.module.css';
+import * as Yup from 'yup';
 import shortid from 'shortid';
 
-export default class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const initialValues = {
+  name: '',
+  number: '',
+};
 
-  onFormSubmit = (e) => {
-    e.preventDefault();
+const schema = Yup.object({
+  name: Yup.string().required(),
+  number: Yup.number().required(),
+});
 
+export const ContactForm = ({ contacts, onAddContact }) => {
+  function onFormSubmit(values, actions) {
+    actions.resetForm();
     const contact = {
       id: shortid.generate(),
-      name: this.state.name,
-      number: this.state.number,
+      name: values.name,
+      number: values.number,
     };
-    // {this.props.contacts.includes(contact) ? console.log('includes'): console.log('not includes')}
-    // if(this.props.contacts.includes(contact)){
-    //   return console.log('includes')
-    // } else {
-    //   return console.log('not includes')
-    // }
-    this.props.onAddContact(contact); 
-    this.setState({
-      name: '',
-      number: '',
-    });
-
-  };
-
-  handleInputChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  render() {
-    const { contacts } = this.props;
-    return (
-      <form
+    onAddContact(contact);
+  }
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={schema}
+      onSubmit={onFormSubmit}
+    >
+      <Form
         className={css.ContactsWrapper}
-        contacts={contacts}
-        onSubmit={this.onFormSubmit}
+        // contacts={contacts}
       >
         <label htmlFor="name" className={css.Label}>
           Name
-          <input
-            id="name"
-            type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleInputChange}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
+          <Field id="name" type="text" name="name" required />
         </label>
 
         <label htmlFor="tel" className={css.Label}>
           Number
-          <input
-            id="tel"
-            type="tel"
-            value={this.state.number}
-            onChange={this.handleInputChange}
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
+          <Field id="tel" type="tel" name="number" required />
+          <ErrorMessage name="number" />
         </label>
         <button className={css.Btn} type="submit">
           Add contact
         </button>
-      </form>
-    );
-  }
-}
+      </Form>
+    </Formik>
+  );
+};
+
+export default ContactForm;
