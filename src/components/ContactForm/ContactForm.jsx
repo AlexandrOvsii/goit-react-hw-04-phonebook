@@ -3,10 +3,24 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import css from './ContactForm.module.css';
 import * as Yup from 'yup';
 import shortid from 'shortid';
+import styled from 'styled-components';
 
 const initialValues = {
   name: '',
   number: '',
+};
+
+const ErrorText = styled.p`
+  color: red;
+`;
+
+const FormError = ({ name }) => {
+  return (
+    <ErrorMessage
+      name={name}
+      render={message => <ErrorText>{message}</ErrorText>}
+    ></ErrorMessage>
+  );
 };
 
 const schema = Yup.object({
@@ -30,19 +44,17 @@ export const ContactForm = ({ contacts, onAddContact }) => {
       validationSchema={schema}
       onSubmit={onFormSubmit}
     >
-      <Form
-        className={css.ContactsWrapper}
-        // contacts={contacts}
-      >
+      <Form className={css.ContactsWrapper}>
         <label htmlFor="name" className={css.Label}>
           Name
-          <Field id="name" type="text" name="name" required />
+          <Field id="name" type="text" name="name"/>
+          <FormError name="name" />
         </label>
 
         <label htmlFor="tel" className={css.Label}>
           Number
-          <Field id="tel" type="tel" name="number" required />
-          <ErrorMessage name="number" />
+          <Field id="tel" type="tel" name="number"/>
+          <FormError name="number" />
         </label>
         <button className={css.Btn} type="submit">
           Add contact
