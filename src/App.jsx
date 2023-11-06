@@ -3,11 +3,11 @@ import css from './App.module.css';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
-import contacs from './contacts.json';
+import contacts from './contacts.json';
 
 class App extends Component {
   state = {
-    contacts: contacs,
+    contacts: contacts,
     filter: '',
   };
 
@@ -37,6 +37,26 @@ class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
+  componentDidMount() {
+    console.log('App componentDidMount');
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    console.log(parsedContacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    //prevState - это то, что записано в стейт до обновления. prevProps - это то, что изменилось при введении или удалении
+    console.log('App componentDidUpdate');
+
+    if (prevState.contacts !== this.state.contacts) {
+      console.log('Обновилось');
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   render() {
     const { filter, contacts } = this.state;
