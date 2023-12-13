@@ -35,11 +35,11 @@ function App() {
     setFilter(event.currentTarget.value);
   };
 
-  // const getVisibleContacts = () => {
-  //   return contactsList.filter(contact =>
-  //     contact.name.toLowerCase().includes(filter.toLowerCase())
-  //   );
-  // };
+  const getVisibleContacts = () => {
+    return contactsList.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
 
   //   getVisibleContacts = () => {
   //     const { contacts, filter } = this.state;
