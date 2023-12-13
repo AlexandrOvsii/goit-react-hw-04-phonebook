@@ -3,59 +3,66 @@ import css from './App.module.css';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
-import contactList from './contacts.json';
+import contacts from './contacts.json';
 
 function App() {
-  const [contacts, setContacts] = useState(contactList);
+  const [contactsList, setContacts] = useState(contacts);
   const [filter, setFilter] = useState('');
-  console.log(filter)
 
   useEffect(() => {
     console.log('App componentDidMount');
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
+    const lsContacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(lsContacts);
     if (parsedContacts) {
       setContacts(parsedContacts);
     }
   }, []);
 
   useEffect(() => {
-    console.log('Обновилось');
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  }, [contacts]);
+    console.log('App componentDidUpdate');
+    localStorage.setItem('contacts', JSON.stringify(contactsList));
+  }, [contactsList]);
 
-  const onAddContact = contact => {
-    if (contacts.find(item => item.name === contact.name)) {
+  function onAddContact(contact) {
+    console.log(contact);
+    if (contactsList.find(item => item.name === contact.name)) {
       alert(`${contact.name} is already in contacts`);
     } else {
-      setContacts(prevState => [...prevState, contact]);
+      setContacts(prevState => [contact, ...prevState]);
     }
-  };
-
+  }
   const changeFilter = event => {
     setFilter(event.currentTarget.value);
   };
 
   const getVisibleContacts = () => {
-    return contacts.filter(contact =>
+    return contactsList.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
+  //   getVisibleContacts = () => {
+  //     const { contacts, filter } = this.state;
+  //     return contacts.filter(contact =>
+  //       contact.name.toLowerCase().includes(filter.toLowerCase())
+  //     );
+  //   };
+  console.log(getVisibleContacts());
   const deleteContact = contactId => {
-    setContacts(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+    setContacts(prevState =>
+      prevState.filter(contact => contact.id !== contactId)
+    );
   };
 
   return (
     <div>
       <h1 className={css.Title}>Phonebook</h1>
-      <ContactForm contacts={contacts} onAddContact={onAddContact} />
+      <ContactForm contacts={contactsList} onAddContact={onAddContact} />
       <h2 className={css.Title}>Contacts</h2>
       <Filter filter={filter} onChange={changeFilter} />
       <ContactList
-        contacts={getVisibleContacts}
+        // visibleContact={getVisibleContacts}
+        contacts={contactsList}
         deleteContact={deleteContact}
       />
     </div>

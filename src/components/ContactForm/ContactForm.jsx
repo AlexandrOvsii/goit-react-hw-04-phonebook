@@ -28,7 +28,9 @@ const schema = Yup.object({
   number: Yup.number().required(),
 });
 
-export const ContactForm = ({ contacts, onAddContact }) => {
+export const ContactForm = ({ onAddContact }) => {
+
+
   function onFormSubmit(values, actions) {
     actions.resetForm();
     const contact = {
@@ -47,13 +49,13 @@ export const ContactForm = ({ contacts, onAddContact }) => {
       <Form className={css.ContactsWrapper}>
         <label htmlFor="name" className={css.Label}>
           Name
-          <Field id="name" type="text" name="name"/>
+          <Field id="name" type="text" name="name" />
           <FormError name="name" />
         </label>
 
         <label htmlFor="tel" className={css.Label}>
           Number
-          <Field id="tel" type="tel" name="number"/>
+          <Field id="tel" type="tel" name="number" />
           <FormError name="number" />
         </label>
         <button className={css.Btn} type="submit">
