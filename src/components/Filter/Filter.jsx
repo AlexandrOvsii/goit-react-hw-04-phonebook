@@ -1,5 +1,5 @@
 import React from 'react';
-import css from './Filter.module.css'
+import css from './Filter.module.css';
 
 function Filter({ filter, onChange }) {
   return (

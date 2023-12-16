@@ -29,8 +29,6 @@ const schema = Yup.object({
 });
 
 export const ContactForm = ({ onAddContact }) => {
-
-
   function onFormSubmit(values, actions) {
     actions.resetForm();
     const contact = {
